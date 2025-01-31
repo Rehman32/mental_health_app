@@ -1,0 +1,77 @@
+body {
+    font-family: 'Solway', serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.stress-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.input-section {
+    background-color: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    width: 300px;
+}
+
+.input-section label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.input-section input {
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin-bottom: 12px;
+}
+
+.result-section {
+    background-color: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+}
+
+.result-section h2 {
+    color: #2c3e50;
+}
+
+button {
+    width: 100%;
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#goToDashboardBtn {
+    background-color: #3498db;
+    color: #fff;
+    margin-top: 19px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 340px;
+}
+button:hover,
+#goToDashboardBtn:hover {
+    background-color: #c0392b;
+}

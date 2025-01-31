@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Wellness Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2ecc71;
+            --secondary: #27ae60;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
+
+        body {
+            background-color: var(--light);
+        }
+
+        .navbar {
+            background-color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo h1 {
+            color: var(--dark);
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                        url('/api/placeholder/1920/1080') center/cover;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 74px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: var(--secondary);
+        }
+
+        .features {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h3 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            color: var(--dark);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .feature-card img {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h4 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .quote-section {
+            background-color: var(--dark);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .quote {
+            max-width: 800px;
+            margin: 0 auto;
+            font-style: italic;
+            font-size: 1.5rem;
+        }
+
+        .quote-author {
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <img src="/api/placeholder/40/40" alt="Wellness Hub Logo">
+                <h1>Personal Wellness Hub</h1>
+            </div>
+            <div class="nav-links">
+                <a href="bmi.html">BMI Calculator</a>
+                <a href="stress.html">Stress Level</a>
+                <a href="emotion.html">Emotions</a>
+                <a href="depression.html">Depression</a>
+                <a href="personality.html">Personality</a>
+                <a href="login.html">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Your Journey to Wellness Starts Here</h2>
+            <p>Discover personalized insights and tools to enhance your physical and mental well-being. Track your progress, understand your emotions, and build a healthier lifestyle.</p>
+            <button class="cta-button">Get Started</button>
+        </div>
+    </section>
+
+    <section class="features">
+        <h3>Comprehensive Wellness Tools</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <img src="/api/placeholder/64/64" alt="BMI Icon">
+                <h4>BMI Tracking</h4>
+                <p>Monitor your Body Mass Index and receive personalized recommendations for maintaining a healthy weight.</p>
+            </div>
+            <div class="feature-card">
+                <img src="/api/placeholder/64/64" alt="Stress Icon">
+                <h4>Stress Management</h4>
+                <p>Track your stress levels and learn effective coping strategies for better mental health.</p>
+            </div>
+            <div class="feature-card">
+                <img src="/api/placeholder/64/64" alt="Emotion Icon">
+                <h4>Emotion Analysis</h4>
+                <p>Gain deeper insights into your emotional patterns and develop better self-awareness.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="quote-section">
+        <div class="quote">
+            "The greatest wealth is health. Take care of your body, it's the only place you have to live."
+            <div class="quote-author">- Virgil</div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Personal Wellness Hub. All rights reserved.</p>
+    </footer>
+</body>
+</html>

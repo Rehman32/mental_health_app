@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="personality.css">
+    <title>MBTI Personality Indicator</title>
+</head>
+
+<body>
+    <header>
+        <h1> MBTI Personality Indicator</h1>
+    </header>
+    <div class="container">
+
+        <h3>Fill the form low=1, high=10:</h3>
+        <form id="personalityForm">
+            <div class="form-group">
+                <label for="question1">I prefer to focus on the outer world and take in information through my senses.</label>
+                <input type="number" id="question1" step="1" min="1" max="10" required>
+            </div>
+
+            <div class="form-group">
+                <label for="question2">I prefer to focus on my inner world and take in information through intuition.</label>
+                <input type="number" id="question2" step="1" min="1" max="10" required>
+            </div>
+
+            <div class="form-group">
+                <label for="question3">I prefer to make decisions based on logic and objective analysis.</label>
+                <input type="number" id="question3" step="1" min="1" max="10" required>
+            </div>
+
+            <div class="form-group">
+                <label for="question4">I prefer to make decisions based on values and the impact on people.</label>
+                <input type="number" id="question4" step="1" min="1" max="10" required>
+            </div>
+
+            <div class="form-group">
+                <label for="question5">I prefer to have a planned and organized approach to life.</label>
+                <input type="number" id="question5" step="1" min="1" max="10" required>
+            </div>
+
+            <button type="button" onclick="calculateMBTI()">Get MBTI Personality Type</button>
+        </form>
+
+        <div id="personalityOutput"></div>
+        <div id="recommendation"></div>
+        <div id="keyCharacteristics"></div>
+        <!-- Go to Dashboard button -->
+        <button id="goToDashboardBtn" onclick="goToDashboard()">Go to Dashboard</button>
+        <div id="personalityOutput"></div>
+        <div id="recommendation"></div>
+        <div id="keyCharacteristics"></div>
+
+    </div>
+
+    <script src="personality.js"></script>
+</body>
+
+</html>
+<!-- ENTJ (The Commander): Extraverted, Intuitive, Thinking, Judging. Known for being strategic, assertive, and natural leaders.
+
+ENFP (The Campaigner): Extraverted, Intuitive, Feeling, Perceiving. Energetic, imaginative, and optimistic, enjoying exploring possibilities.
+
+ISTJ (The Inspector): Introverted, Sensing, Thinking, Judging. Reliable, systematic, practical, and with a strong sense of duty.
+
+ISFP (The Adventurer): Introverted, Sensing, Feeling, Perceiving. Creative, sensitive, and gentle, with a value for aesthetics. -->

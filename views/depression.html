@@ -1,0 +1,32 @@
+<!-- depression.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="depression.css">
+    <title>Depression Assessment</title>
+</head>
+<body>
+    <header>
+        <h1>Depression Assessment</h1>
+    </header>
+
+    <div class="depression-container">
+        <h2>Take the Depression Assessment</h2>
+        <form id="depressionForm" action="/depression" method="post">
+            <div id="formQuestions"></div>
+            <button type="submit">Submit Assessment</button>
+        </form>
+
+        <!-- Display assessment result here -->
+        <div class="result-section" id="resultSection"></div>
+
+        <!-- Go to Dashboard button -->
+        <button id="goToDashboardBtn" onclick="goToDashboard()">Go to Dashboard</button>
+    </div>
+
+    <script src="depression.js"></script>
+    
+</body>
+</html>

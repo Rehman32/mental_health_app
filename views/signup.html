@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="login.css" />
+    <title>Sign-Up</title>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Signup Form -->
+      <div class="form-container" id="signupForm" >
+        <div class="brand">
+          <h1>Create Account</h1>
+          <p>Sign up to get started</p>
+        </div>
+
+        <div class="alert alert-error" id="signupError"></div>
+        <div class="alert alert-success" id="signupSuccess"></div>
+
+        <form action="/api/signup" method="POST" onsubmit="handleSignup(event)">
+          <div class="form-group">
+            <label for="signupUsername">Username</label>
+            <i class="fas fa-user"></i>
+            <input
+              type="text"
+              name="username"
+              id="signupUsername"
+              required
+              placeholder="Choose a username"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="signupEmail">Email</label>
+            <i class="fas fa-envelope"></i>
+            <input
+              type="email"
+              name="email"
+              id="signupEmail"
+              required
+              placeholder="Enter your email"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="signupPassword">Password</label>
+            <i class="fas fa-lock"></i>
+            <input
+              type="password"
+              name="password"
+              id="signupPassword"
+              required
+              placeholder="Choose a password"
+            />
+            <i
+            class="fas fa-eye password-toggle"
+              onclick="togglePassword('signupPassword', this)"
+            ></i>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <span>Create Account</span>
+            <div class="spinner" id="signupSpinner"></div>
+          </button>
+
+          <div class="divider">
+            <span>or sign up with</span>
+          </div>
+
+          <div class="social-buttons">
+            <button
+              type="button"
+              class="btn btn-social"
+              onclick="handleGoogleLogin()"
+            >
+              <i class="fab fa-google"></i>
+              <span>Sign up with Google</span>
+            </button>
+            <button
+              type="button"
+              class="btn btn-facebook"
+              onclick="handleFacebookLogin()"
+            >
+              <i class="fab fa-facebook-f"></i>
+              <span>Sign up with Facebook</span>
+            </button>
+          </div>
+
+          <div class="switch-form">
+            <p>
+              Already have an account?
+              <a href="./login.html ">Sign In</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script src="login.js"></script>
+</html>

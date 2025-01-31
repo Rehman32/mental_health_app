@@ -1,0 +1,50 @@
+<!-- stress.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stress.css">
+    <title>Stress Measurement</title>
+</head>
+<body>
+    <header>
+        <h1>Stress Measurement</h1>
+        <!-- Add any additional header elements if needed -->
+    </header>
+
+    <div class="stress-container">
+        <div>
+            <h2>Fill the form low=1, high=10</h2>
+        </div>
+        <div class="input-section">
+            <h2>Rate your stress factors:</h2>
+            <form id="stressForm">
+                <label for="workload">Workload (1-10):</label>
+                <input type="number" id="workload" name="workload" min="1" max="10" required>
+
+                <label for="relationships">Relationships (1-10):</label>
+                <input type="number" id="relationships" name="relationships" min="1" max="10" required>
+
+                <label for="health">Health (1-10):</label>
+                <input type="number" id="health" name="health" min="1" max="10" required>
+
+                <label for="finances">Finances (1-10):</label>
+                <input type="number" id="finances" name="finances" min="1" max="10" required>
+
+                <button type="button" onclick="calculateStress()">Calculate Stress</button>
+            </form>
+        </div>
+
+        <div class="result-section" id="stressResultSection">
+            <!-- Stress result will be displayed here -->
+        </div>
+        <div>
+         <!-- Go to Dashboard button -->
+         <button id="goToDashboardBtn" onclick="goToDashboard()">Go to Dashboard</button>
+         </div>
+    </div>
+
+    <script src="stress.js"></script>
+</body>
+</html>

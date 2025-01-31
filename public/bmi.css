@@ -1,0 +1,93 @@
+body {
+    font-family: 'Solway', serif;
+    margin: 0;
+    padding: 0;
+    background: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%2Fimages%3Fk%3Dbmi&psig=AOvVaw1gzXDZqC9a1i3e42AhcH3U&ust=1702620190825000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCIj2-uOgjoMDFQAAAAAdAAAAABAD') center fixed no-repeat;
+    background-size: cover;
+}
+
+
+header {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+.bmi-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    
+    
+}
+
+.input-section {
+    background-color: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    width: 300px;
+}
+
+.input-section label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.input-section input {
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+}
+
+.result-section {
+    background-color: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    
+}
+
+.result-section h2 {
+    color: #2c3e50;
+}
+
+button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+#goToDashboardBtn {
+    background-color: #3498db;
+    color: #fff;
+    margin-top: 19px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 340px;
+}
+
+button:hover,
+#goToDashboardBtn:hover {
+    background-color: #0f334b;
+}
+#bmi-logo{
+    width: 62px;
+    height: 59px;
+    position: absolute;
+    left: 12px;
+    top: 15px;
+}

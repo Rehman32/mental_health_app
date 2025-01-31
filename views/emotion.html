@@ -1,0 +1,35 @@
+<!-- //emotion.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="emotion.css">
+    <title>Emotion Analysis</title>
+</head>
+<body>
+    <header>
+        <h1> Emotion Analysis</h1>
+    </header>
+  <div class="container">
+     <h1>How are you feeling today?</h1>
+     <p>Please select the emoji that best describes your current mood:</p>
+     <div id="emojis">
+        <img src="pictures/sad.png" alt="Sad" data-emotion="sad">
+        <img src="pictures/angry.png" alt="Angry" data-emotion="angry">
+        <img src="pictures/surprised.png" alt="Surprised" data-emotion="surprised">
+        <img src="pictures/neutral.png" alt="Neutral" data-emotion="neutral">
+        <img src="pictures/happy.png" id="happy_img" alt="Happy" data-emotion="happy">
+     </div>
+     <p>Would you like to share anything else about your mood?</p>
+     <textarea id="message" placeholder="Enter your thoughts and feelings"></textarea>
+     <button id="analyze-button">Analyze my emotions</button>
+     <div id="analysis-result"></div>
+     <div id="emotion-chart"></div>
+     <div id="recommendations"></div> <!-- Added recommendations div -->
+     <!-- Go to Dashboard button -->
+     <button id="goToDashboardBtn" onclick="goToDashboard()">Go to Dashboard</button>
+   </div> 
+    <script src="emotion.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Alegreya&family=EB+Garamond&family=Lora&family=Salsa&family=Solway&display=swap');
+
+body {
+    font-family: 'Salsa', serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+h3{
+    text-align: center;
+}
+
+.container {
+    max-width: 600px;
+    margin: 30px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+#goToDashboardBtn {
+    background-color: #4caf50;
+    color: #fff;
+    margin-top: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover,
+#goToDashboardBtn:hover {
+    background-color: #45a049;
+}
+
+#recommendation {
+    margin-top: 20px;
+    font-family: 'Salsa', cursive;
+    border: 2px solid black;
+    border-radius: 9px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    padding: 13px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.tooltip {
+    font-size: 12px;
+    color: #555;
+    margin-left: 8px;
+    display: inline-block;
+    font-family: 'Solway', cursive;
+}
