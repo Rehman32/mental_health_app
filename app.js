@@ -229,7 +229,7 @@ app.post('/personality', requireLogin, (req, res) => {
 
 // ... (remaining code)
 
-// Handle Login
+//intial code for  Handle Login
 app.post('/login', (req, res) => {
     const { username,email, password } = req.body;
 
@@ -256,7 +256,7 @@ app.post('/login', (req, res) => {
     });
 });
 
-// Handle Signup
+// intial code for Handle Signup
 app.post('/signup', async (req, res) => {
     console.log('Request body:', req.body);
     const { username,email, password } = req.body;
@@ -275,87 +275,107 @@ app.post('/signup', async (req, res) => {
         res.send(`User ${username} signed up successfully! <a href="/">Go back to login</a>`);
     });
 });
-// Handle Check Username
-app.post('/api/check-username', async (req, res) => {
+
+
+// API Endpoint: Check if username is available
+app.post("/api/check-username", (req, res) => {
     const { username } = req.body;
-  
-    db.query('SELECT * FROM USERS WHERE username = ?', [username], (err, results) => {
+    if (!username) {
+      return res.json({ available: false });
+    }
+    db.query("SELECT id FROM USERS WHERE username = ?", [username], (err, results) => {
       if (err) {
-        console.error(err);
+        console.error("Database error:", err);
         return res.json({ available: false });
       }
-  
       const available = results.length === 0;
       res.json({ available });
     });
   });
   
- // Handle Login
-app.post('/api/login', (req, res) => {
-    const { username, password } = req.body;
+  // API Endpoint: Signup
+  app.post("/api/signup", async (req, res) => {
+    const { username, email, password } = req.body;
   
-    db.query('SELECT * FROM USERS WHERE username = ?', [username], async (err, results) => {
+    // Basic validation (the frontend already validates but always double-check)
+    if (!username || !email || !password) {
+      return res.status(400).json({ error: "All fields are required." });
+    }
+    if (password.length < 8) {
+      return res.status(400).json({ error: "Password must be at least 8 characters long." });
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: "Invalid email address." });
+    }
+  
+    // Check if username already exists
+    db.query("SELECT id FROM USERS WHERE username = ?", [username], async (err, results) => {
       if (err) {
-        console.error('Error querying database:', err);
-        return res.json({ error: 'An error occurred' });
+        console.error("Database error:", err);
+        return res.status(500).json({ error: "An error occurred." });
+      }
+      if (results.length > 0) {
+        return res.status(400).json({ error: "Username already taken. Please choose another." });
       }
   
-      if (results.length > 0) {
-        const user = results[0];
+      // Hash the password and insert the new user
+      try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        db.query(
+          "INSERT INTO USERS (username, email, password) VALUES (?, ?, ?)",
+          [username, email, hashedPassword],
+          (err, results) => {
+            if (err) {
+              console.error("Error inserting into database:", err);
+              return res.status(500).json({ error: "An error occurred during signup." });
+            }
+            // Optionally set session data
+            req.session.userId = results.insertId;
+            return res.status(200).json({ success: true });
+          }
+        );
+      } catch (error) {
+        console.error("Hashing error:", error);
+        return res.status(500).json({ error: "An error occurred during signup." });
+      }
+    });
+  });
   
-        // Compare hashed password
+  // API Endpoint: Login
+  app.post("/api/login", (req, res) => {
+    const { username, password } = req.body;
+  
+    if (!username || !password) {
+      return res.status(400).json({ error: "Both username and password are required." });
+    }
+  
+    // Attempt to find the user by username (or email if you extend functionality)
+    db.query("SELECT * FROM USERS WHERE username = ?", [username], async (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ error: "An error occurred." });
+      }
+      if (results.length === 0) {
+        return res.status(400).json({ error: "Invalid login credentials." });
+      }
+  
+      const user = results[0];
+      try {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
           req.session.userId = user.id;
-          return res.json({ success: true });
+          return res.status(200).json({ success: true });
         } else {
-          return res.json({ error: 'Invalid login credentials' });
+          return res.status(400).json({ error: "Invalid login credentials." });
         }
-      } else {
-        return res.json({ error: 'Invalid login credentials' });
+      } catch (error) {
+        console.error("Bcrypt error:", error);
+        return res.status(500).json({ error: "An error occurred." });
       }
     });
   });
   
-  // Handle Signup
-  app.post('/api/signup', async (req, res) => {
-    const { username, email, password } = req.body;
-  
-    // Check if username is already taken
-    db.query('SELECT * FROM USERS WHERE username = ?', [username], async (err, results) => {
-      if (err) {
-        console.error('Error querying database:', err);
-        return res.json({ error: 'An error occurred' });
-      }
-  
-      if (results.length > 0) {
-        return res.json({ error: 'Username already taken. Please Choose another' });
-      }
-  
-      // Check if email is valid
-      if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-        return res.json({ error: 'Invalid email address' });
-      }
-  
-      // Check if password is strong enough
-      if (password.length < 8) {
-        return res.json({ error: 'Password must be at least 8 characters long' });
-      }
-  
-      // Hash password
-      const hashedPassword = await bcrypt.hash(password, 10);
-  
-      // Insert user into database
-      db.query('INSERT INTO USERS (username, email, password) VALUES (?, ?, ?)', [username, email, hashedPassword], (err) => {
-        if (err) {
-          console.error('Error inserting into database:', err);
-          return res.json({ error: 'An error occurred' });
-        }
-  
-        return res.json({ success: true });
-      });
-    });
-  });
 
 // Handle Google/Facebook clicks
 app.post('/auth/google', (req, res) => {

@@ -1,49 +1,107 @@
-// Toggle loading spinner
+//login.js
+
+// Helper: Toggle spinner visibility
 function toggleSpinner(formType, show) {
   const spinner = document.getElementById(`${formType}Spinner`);
-  spinner.style.display = show ? "block" : "none";
+  if (spinner) {
+    spinner.style.display = show ? "inline-block" : "none";
+  }
 }
 
-// Show alert message
-function showAlert(type, message, formType) {
-  const alertElement = document.getElementById(`${formType}Error`);
-  if (type === "Success") {
-    alertElement.classList.remove("alert-error");
-    alertElement.classList.add("alert-success");
+// Helper: Display alert messages
+function showAlert(formType, type, message) {
+  const alertEl = document.getElementById(`${formType}Alert`);
+  alertEl.textContent = message;
+  alertEl.className = `alert ${type.toLowerCase()}`;
+  alertEl.style.display = "block";
+  // Auto-hide after 5 seconds
+  setTimeout(() => {
+    alertEl.style.display = "none";
+  }, 5000);
+}
+
+// Toggle password visibility
+function togglePassword(inputId, icon) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  if (input.type === "password") {
+    input.type = "text";
+    icon.classList.remove("fa-eye");
+    icon.classList.add("fa-eye-slash");
   } else {
-    alertElement.classList.remove("alert-success");
-    alertElement.classList.add("alert-error");
+    input.type = "password";
+    icon.classList.remove("fa-eye-slash");
+    icon.classList.add("fa-eye");
   }
-  alertElement.textContent = message;
+}
+
+// Handle social login (placeholder)
+function handleSocialLogin(provider) {
+  alert(`${provider} login is coming soon!`);
+}
+
+// Validate inputs before submission
+function validateInput(formType) {
+  let valid = true;
+  if (formType === "signup") {
+    const username = document.getElementById("signupUsername").value.trim();
+    const email = document.getElementById("signupEmail").value.trim();
+    const password = document.getElementById("signupPassword").value;
+    const usernameRegex = /^[a-zA-Z0-9_]{3,}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!usernameRegex.test(username)) {
+      showAlert("signup", "Error", "Username must be at least 3 characters and contain only letters, numbers, and underscores.");
+      valid = false;
+    } else if (!emailRegex.test(email)) {
+      showAlert("signup", "Error", "Please enter a valid email address.");
+      valid = false;
+    } else if (password.length < 8) {
+      showAlert("signup", "Error", "Password must be at least 8 characters long.");
+      valid = false;
+    }
+  } else if (formType === "login") {
+    const username = document.getElementById("loginUsername").value.trim();
+    const password = document.getElementById("loginPassword").value;
+    if (username.length < 3) {
+      showAlert("login", "Error", "Please enter a valid username/email.");
+      valid = false;
+    } else if (password.length < 8) {
+      showAlert("login", "Error", "Password must be at least 8 characters long.");
+      valid = false;
+    }
+  }
+  return valid;
 }
 
 // Handle login form submission
 async function handleLogin(event) {
   event.preventDefault();
+  if (!validateInput("login")) return;
   toggleSpinner("login", true);
 
-  const username = document.getElementById("loginUsername").value;
+  const username = document.getElementById("loginUsername").value.trim();
   const password = document.getElementById("loginPassword").value;
 
   try {
     const response = await fetch("/api/login", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ username, password })
     });
 
     const data = await response.json();
-
-    if (response.ok) {
-      showAlert("Success", "Login successful!", "login");
-      window.location.href = "/dashboard";
+    if (response.ok && data.success) {
+      showAlert("login", "Success", "Login successful! Redirecting...");
+      // Redirect after a short delay
+      setTimeout(() => window.location.href = "/dashboard", 1500);
     } else {
-      showAlert("Error", data.error || "Login failed", "login");
+      showAlert("login", "Error", data.error || "Invalid login credentials.");
     }
   } catch (error) {
-    showAlert("Error", "An error occurred", "login");
+    showAlert("login", "Error", "An error occurred during login.");
   } finally {
     toggleSpinner("login", false);
   }
@@ -52,335 +110,80 @@ async function handleLogin(event) {
 // Handle signup form submission
 async function handleSignup(event) {
   event.preventDefault();
+  if (!validateInput("signup")) return;
   toggleSpinner("signup", true);
 
-  const username = document.getElementById("signupUsername").value;
-  const email = document.getElementById("signupEmail").value;
+  const username = document.getElementById("signupUsername").value.trim();
+  const email = document.getElementById("signupEmail").value.trim();
   const password = document.getElementById("signupPassword").value;
 
   try {
-    // Check if username is available
-    const usernameResponse = await fetch("/api/check-username", {
+    // First check if username is available
+    const checkResponse = await fetch("/api/check-username", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({ username }),
+      body: JSON.stringify({ username })
     });
-
-    const usernameData = await usernameResponse.json();
-
-    if (!usernameData.available) {
-      showAlert("Error", "Username already taken", "signup");
+    const checkData = await checkResponse.json();
+    if (!checkData.available) {
+      showAlert("signup", "Error", "Username already taken. Please choose another.");
+      toggleSpinner("signup", false);
       return;
     }
 
-    // Check if email is valid
-    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-      showAlert("Error", "Invalid email address", "signup");
-      return;
-    }
-
-    // Check if password is strong enough
-    if (password.length < 8) {
-      showAlert("Error", "Password must be at least 8 characters long", "signup");
-      return;
-    }
-
-    // Submit signup form
+    // Proceed to signup
     const response = await fetch("/api/signup", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({ username, email, password }),
+      body: JSON.stringify({ username, email, password })
     });
-
     const data = await response.json();
-
-    if (response.ok) {
-      showAlert("Success", "Account created successfully!", "signup");
-      setTimeout(() => window.location.href = "/", 2000);
+    if (response.ok && data.success) {
+      showAlert("signup", "Success", "Account created successfully! Redirecting...");
+      setTimeout(() => window.location.href = "/dashboard", 1500);
     } else {
-      showAlert("Error", data.error || "Signup failed", "signup");
+      showAlert("signup", "Error", data.error || "Signup failed.");
     }
   } catch (error) {
-    showAlert("Error", "An error occurred", "signup");
+    showAlert("signup", "Error", "An error occurred during signup.");
   } finally {
     toggleSpinner("signup", false);
   }
 }
 
-// Toggle password visibility
-// Toggle password visibility
-function togglePassword(inputId, icon) {
-  const input = document.getElementById(inputId);
-  const type = input.type === "password" ? "text" : "password";
-  input.type = type;
-  icon.className = `fas fa-${
-    type === "password" ? "eye" : "eye-slash"
-  } password-toggle`;
-}
-
-// // Show alert message
-// function showAlert(type, message, formType) {
-//   const alert = document.getElementById(`${formType}${type}`);
-//   alert.textContent = message;
-//   alert.style.display = "block";
-//   setTimeout(() => {
-//     alert.style.display = "none";
-//   }, 5000);
-// }
-
-// // Toggle loading spinner
-// function toggleSpinner(formType, show) {
-//   const spinner = document.getElementById(`${formType}Spinner`);
-//   spinner.style.display = show ? "block" : "none";
-// }
-
-// // Handle login form submission
-// async function handleLogin(event) {
-//   event.preventDefault();
-//   toggleSpinner("login", true);
-
-//   const username = document.getElementById("loginUsername").value;
-//   const password = document.getElementById("loginPassword").value;
-
-//   try {
-//     const response = await fetch("/api/login", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ username, password }),
-//     });
-
-//     const data = await response.json();
-
-//     if (response.ok) {
-//       showAlert("Success", "Login successful!", "login");
-//       window.location.href = "/dashboard";
-//     } else {
-//       showAlert("Error", data.error || "Login failed", "login");
-//     }
-//   } catch (error) {
-//     showAlert("Error", "An error occurred", "login");
-//   } finally {
-//     toggleSpinner("login", false);
-//   }
-// }
-
-// // Handle signup form submission
-// async function handleSignup(event) {
-//   event.preventDefault();
-//   toggleSpinner("signup", true);
-
-//   const username = document.getElementById("signupUsername").value;
-//   const email = document.getElementById("signupEmail").value;
-//   const password = document.getElementById("signupPassword").value;
-
-//   try {
-//     const response = await fetch("/api/signup", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ username, email, password }),
-//     });
-
-//     const data = await response.json();
-
-//     if (response.ok) {
-//       showAlert("Success", "Account created successfully!", "signup");
-//       setTimeout(() => toggleForm("login"), 2000);
-//     } else {
-//       showAlert("Error", data.error || "Signup failed", "signup");
-//     }
-//   } catch (error) {
-//     showAlert("Error", "An error occurred", "signup");
-//   } finally {
-//     toggleSpinner("signup", false);
-//   }
-// }
-
-// Handle social login
-// Handle social media login
-function handleGoogleLogin() {
-  alert('not avilable');
-};
-
-function handleFacebookLogin() {
-  alert('not available');
-};
-
-
-
-// Add form validation
-function validateForm(formType) {
-  const password = document.getElementById(`${formType}Password`).value;
-
-  // Password strength validation
-  if (password.length < 8) {
-    showAlert(
-      "Error",
-      "Password must be at least 8 characters long",
-      formType
-    );
-    return false;
-  }
-
-  if (formType === "signup") {
-    const email = document.getElementById("signupEmail").value;
-
-    // Basic email validation
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-      showAlert("Error", "Please enter a valid email address", formType);
-      return false;
-    }
-
-    const username = document.getElementById("signupUsername").value;
-
-    // Username validation
-    if (username.length < 3) {
-      showAlert(
-        "Error",
-        "Username must be at least 3 characters long",
-        formType
-      );
-      return false;
-    }
-
-    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-      showAlert(
-        "Error",
-        "Username can only contain letters, numbers, and underscores",
-        formType
-      );
-      return false;
-    }
-  }
-
-  return true;
-}
-
-
-
-// Add password strength indicator
-const passwordInputs = document.querySelectorAll(
-  'input[type="password"]'
-);
-passwordInputs.forEach((input) => {
-  input.addEventListener("input", function () {
-    const strength = checkPasswordStrength(this.value);
-    updatePasswordStrengthIndicator(this, strength);
-  });
-});
-
+// Password strength indicator
 function checkPasswordStrength(password) {
   let strength = 0;
-
   if (password.length >= 8) strength++;
   if (/[A-Z]/.test(password)) strength++;
   if (/[a-z]/.test(password)) strength++;
   if (/[0-9]/.test(password)) strength++;
   if (/[^A-Za-z0-9]/.test(password)) strength++;
-
   return strength;
 }
 
-function updatePasswordStrengthIndicator(input, strength) {
+function updatePasswordStrengthIndicator(input) {
+  const strength = checkPasswordStrength(input.value);
   const strengthMap = ["Very Weak", "Weak", "Fair", "Good", "Strong"];
-  const colorMap = [
-    "#ff4444",
-    "#ffbb33",
-    "#ffeb3b",
-    "#00C851",
-    "#007E33",
-  ];
-
-  let indicator = input.parentElement.querySelector(".password-strength");
-
-  if (!indicator) {
-    indicator = document.createElement("div");
-    indicator.className = "password-strength";
-    indicator.style.fontSize = "12px";
-    indicator.style.marginTop = "5px";
-    input.parentElement.appendChild(indicator);
-  }
-
-  if (input.value) {
-    indicator.textContent = `Password Strength: ${
-      strengthMap[strength - 1]
-    }`;
-    indicator.style.color = colorMap[strength - 1];
-  } else {
+  const colorMap = ["#ff4444", "#ffbb33", "#ffeb3b", "#00C851", "#007E33"];
+  const indicator = input.parentElement.querySelector(".password-strength");
+  if (input.value && indicator) {
+    // Subtract 1 since array is zero-indexed (if strength is 0, display nothing)
+    indicator.textContent = strength ? `Password Strength: ${strengthMap[strength - 1]}` : "";
+    indicator.style.color = strength ? colorMap[strength - 1] : "";
+  } else if (indicator) {
     indicator.textContent = "";
   }
 }
 
-// Add input validation feedback
-const formInputs = document.querySelectorAll("input");
-formInputs.forEach((input) => {
-  input.addEventListener("input", function () {
-    validateInput(this);
+// Listen for password input changes on signup page
+const signupPasswordInput = document.getElementById("signupPassword");
+if (signupPasswordInput) {
+  signupPasswordInput.addEventListener("input", function () {
+    updatePasswordStrengthIndicator(this);
   });
-
-  input.addEventListener("blur", function () {
-    validateInput(this, true);
-  });
-});
-
-function validateInput(input, showError = false) {
-  let isValid = true;
-  let errorMessage = "";
-
-  switch (input.type) {
-    case "email":
-      isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value);
-      errorMessage = "Please enter a valid email address";
-      break;
-
-    case "password":
-      isValid = input.value.length >= 8;
-      errorMessage = "Password must be at least 8 characters long";
-      break;
-
-    case "text":
-      isValid =
-        input.value.length >= 3 && /^[a-zA-Z0-9_]+$/.test(input.value);
-      errorMessage =
-        "Username must be at least 3 characters and contain only letters, numbers, and underscores";
-      break;
-  }
-
-  if (showError && !isValid && input.value) {
-    showInputError(input, errorMessage);
-  } else {
-    clearInputError(input);
-  }
-
-  return isValid;
-}
-
-function showInputError(input, message) {
-  clearInputError(input);
-  input.style.borderColor = "#ff4444";
-
-  const errorDiv = document.createElement("div");
-  errorDiv.className = "input-error";
-  errorDiv.textContent = message;
-  errorDiv.style.color = "#ff4444";
-  errorDiv.style.fontSize = "12px";
-  errorDiv.style.marginTop = "5px";
-
-  input.parentElement.appendChild(errorDiv);
-}
-
-function clearInputError(input) {
-  input.style.borderColor = "";
-  const errorDiv = input.parentElement.querySelector(".input-error");
-  if (errorDiv) {
-    errorDiv.remove();
-  }
 }

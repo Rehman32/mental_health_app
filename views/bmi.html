@@ -1,44 +1,86 @@
-<!-- bmi.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator | Personal Wellness Hub</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="bmi.css">
-    <title>BMI Tracker</title>
+    <style>
+        
+    </style>
 </head>
 <body>
-    <header>
-        <h1>BMI Tracker</h1
-        <img  id="bmi-logo" src="pictures/bmi.jpg" alt="bmi_logo">
-    </header>
-
-    <div class="bmi-container">
-        <div class="input-section">
-            <h2>Enter your details:</h2>
-            <form id="bmiForm">
-                <label for="feet">Height (feet):</label>
-                <input type="number" id="feet" name="feet" required placeholder="Feet">
-
-                <label for="inches">Height (inches):</label>
-                <input type="number" id="inches" name="inches" required placeholder="Inches">
-
-                <label for="weight">Weight (kg):</label>
-                <input type="number" id="weight" name="weight" required placeholder="Weight">
-
-                <button type="button" onclick="calculateBMI()">Calculate BMI</button>
-            </form>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM12 16c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm1-4h-2V8h2v4z"/>
+                </svg>
+                <h1>Personal Wellness Hub</h1>
+            </div>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="bmi.html">BMI Calculator</a>
+                <a href="stress.html">Stress Level</a>
+                <a href="emotion.html">Emotions</a>
+                <a href="depression.html">Depression</a>
+                <a href="personality.html">Personality</a>
+            </div>
         </div>
+    </nav>
 
-        <div class="result-section" id="resultSection">
-            <!-- BMI result will be displayed here -->
-        </div>
-        <div>
-         <!-- Go to Dashboard button -->
-         <button id="goToDashboardBtn" onclick="goToDashboard()">Go to Dashboard</button>
+    <div class="page-container">
+        <div class="calculator-container">
+            <div class="info-section" data-aos="fade-right">
+                <h2>BMI Calculator</h2>
+                <p>Body Mass Index (BMI) is a simple measurement using your height and weight to work out if your weight is healthy. Calculate your BMI to determine if you're underweight, healthy weight, overweight, or obese.</p>
+                
+                <div class="bmi-chart">
+                    <h4>BMI Categories:</h4>
+                    <div class="chart-bar"></div>
+                    <div class="chart-markers">
+                        <span>16</span>
+                        <span>18.5</span>
+                        <span>25</span>
+                        <span>30</span>
+                        <span>40</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="calculator-section" data-aos="fade-left">
+                <div class="calculator-card">
+                    <form id="bmiForm">
+                        <div class="input-group">
+                            <label for="feet">Height (feet)</label>
+                            <input type="number" id="feet" required placeholder="Enter feet" min="4" max="8">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="inches">Height (inches)</label>
+                            <input type="number" id="inches" required placeholder="Enter inches" min="0" max="11">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="weight">Weight (kg)</label>
+                            <input type="number" id="weight" required placeholder="Enter weight" min="30" max="300">
+                        </div>
+
+                        <button type="button" class="calculate-btn" onclick="calculateBMI()">Calculate BMI</button>
+                    </form>
+                </div>
+
+                <div class="result-card" id="resultSection">
+                    <!-- Results will be displayed here -->
+                </div>
+            </div>
         </div>
     </div>
 
-    <script src="bmi.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="bmi.js">
+        
+    </script>
 </body>
 </html>
