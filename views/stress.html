@@ -1,50 +1,158 @@
-<!-- stress.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stress Assessment | Personal Wellness Hub</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="stress.css">
-    <title>Stress Measurement</title>
-</head>
-<body>
-    <header>
-        <h1>Stress Measurement</h1>
-        <!-- Add any additional header elements if needed -->
-    </header>
-
-    <div class="stress-container">
-        <div>
-            <h2>Fill the form low=1, high=10</h2>
+    <style></style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-content">
+        <a href="dashboard.html" class="logo">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+            />
+          </svg>
+          <h1>Personal Wellness Hub</h1>
+        </a>
+        <div class="nav-links">
+          <a href="bmi.html">BMI Calculator</a>
+          <a href="stress.html" class="active">Stress Level</a>
+          <a href="emotion.html">Emotions</a>
+          <a href="depression.html">Depression</a>
+          <a href="personality.html">Personality</a>
+          <a href="login.html">Logout</a>
         </div>
-        <div class="input-section">
-            <h2>Rate your stress factors:</h2>
-            <form id="stressForm">
-                <label for="workload">Workload (1-10):</label>
-                <input type="number" id="workload" name="workload" min="1" max="10" required>
+      </div>
+    </nav>
 
-                <label for="relationships">Relationships (1-10):</label>
-                <input type="number" id="relationships" name="relationships" min="1" max="10" required>
+    <main class="main-content">
+      <section class="stress-hero" data-aos="fade-down">
+        <h2>Comprehensive Stress Assessment</h2>
+        <p>
+          Understanding your stress levels is the first step toward better
+          mental health. Our advanced assessment tool helps you identify stress
+          factors and provides personalized recommendations.
+        </p>
+      </section>
 
-                <label for="health">Health (1-10):</label>
-                <input type="number" id="health" name="health" min="1" max="10" required>
+      <div class="stress-container">
+        <div class="assessment-form" data-aos="fade-right">
+          <h3>Rate Your Stress Factors</h3>
+          <form id="stressForm">
+            <div class="form-group">
+              <label for="workload">Work/Academic Pressure</label>
+              <input
+                type="range"
+                class="stress-slider"
+                id="workload"
+                min="1"
+                max="10"
+                value="5"
+              />
+              <div class="slider-value">5/10</div>
+            </div>
 
-                <label for="finances">Finances (1-10):</label>
-                <input type="number" id="finances" name="finances" min="1" max="10" required>
+            <div class="form-group">
+              <label for="relationships">Personal Relationships</label>
+              <input
+                type="range"
+                class="stress-slider"
+                id="relationships"
+                min="1"
+                max="10"
+                value="5"
+              />
+              <div class="slider-value">5/10</div>
+            </div>
 
-                <button type="button" onclick="calculateStress()">Calculate Stress</button>
-            </form>
+            <div class="form-group">
+              <label for="health">Health Concerns</label>
+              <input
+                type="range"
+                class="stress-slider"
+                id="health"
+                min="1"
+                max="10"
+                value="5"
+              />
+              <div class="slider-value">5/10</div>
+            </div>
+
+            <div class="form-group">
+              <label for="finances">Financial Situation</label>
+              <input
+                type="range"
+                class="stress-slider"
+                id="finances"
+                min="1"
+                max="10"
+                value="5"
+              />
+              <div class="slider-value">5/10</div>
+            </div>
+
+            <button
+              type="button"
+              class="calculate-btn"
+              onclick="calculateStress()"
+            >
+              Analyze Stress Levels
+            </button>
+          </form>
         </div>
 
-        <div class="result-section" id="stressResultSection">
-            <!-- Stress result will be displayed here -->
-        </div>
-        <div>
-         <!-- Go to Dashboard button -->
-         <button id="goToDashboardBtn" onclick="goToDashboard()">Go to Dashboard</button>
-         </div>
-    </div>
+        <div class="result-section" data-aos="fade-left">
+          <div class="result-header">
+            <h3>Your Stress Analysis</h3>
+            <p>Complete the assessment to see your results</p>
+          </div>
 
+          <div class="stress-meter">
+            <div class="stress-level" id="stressLevelIndicator"></div>
+          </div>
+
+          <div class="stress-categories">
+            <div class="category-card">
+              <h4>Work</h4>
+              <div class="score" id="workScore">-</div>
+            </div>
+            <div class="category-card">
+              <h4>Relations</h4>
+              <div class="score" id="relationScore">-</div>
+            </div>
+            <div class="category-card">
+              <h4>Health</h4>
+              <div class="score" id="healthScore">-</div>
+            </div>
+            <div class="category-card">
+              <h4>Finance</h4>
+              <div class="score" id="financeScore">-</div>
+            </div>
+          </div>
+
+          <div class="recommendations" id="recommendations">
+            <h3>Personalized Recommendations</h3>
+            <p>
+              Complete the assessment to receive tailored advice for managing
+              your stress levels.
+            </p>
+          </div>
+          <div class="result-section" data-aos="fade-up">
+            <div id="stressHistory"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="stress.js"></script>
-</body>
+  </body>
 </html>

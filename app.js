@@ -115,7 +115,7 @@ app.get('/personality', (req,res) =>{
     res.sendFile(path.join(__dirname,'views', 'personality.html'));
 });
 
-// Route to handle BMI records
+// -------------------- BMI API (Updated) --------------------
 app.post('/bmi', requireLogin, (req, res) => {
     const userId = req.session.userId;
     const { height, weight } = req.body;
@@ -126,155 +126,149 @@ app.post('/bmi', requireLogin, (req, res) => {
 
     const bmi = (weight / ((height / 100) * (height / 100))).toFixed(2);
 
-    // Save BMI record to the database
+    // Save BMI record to database
     db.query('INSERT INTO bmi_records (user_id, bmi) VALUES (?, ?)', [userId, bmi], (err) => {
         if (err) {
-            console.error('Error inserting BMI record into the database:', err);
-            return res.status(500).send('Error occurred while saving BMI record.');
+            console.error('Error inserting BMI record:', err);
+            return res.status(500).send('Error saving BMI record.');
         }
 
-        res.status(200).send(`BMI record saved successfully! <a href="/dashboard">Go back to dashboard</a>`);
+        res.status(200).send('BMI record saved successfully!');
     });
 });
 
-// ... (previous code)
+// Fetch BMI records for user
+app.get('/bmi-data', requireLogin, (req, res) => {
+    const userId = req.session.userId;
+    db.query('SELECT * FROM bmi_records WHERE user_id = ?', [userId], (err, results) => {
+        if (err) {
+            console.error('Error fetching BMI data:', err);
+            return res.status(500).send('Error retrieving BMI data.');
+        }
+        res.json(results);
+    });
+});
 
-// Route to handle Emotion Analysis records
+// -------------------- Emotion Analysis API (Updated) --------------------
 app.post('/emotion', requireLogin, (req, res) => {
     const userId = req.session.userId;
-    const selectedEmoji = req.body.selectedEmoji; // Updated variable name
-    const additionalMessage = req.body.additionalMessage; // Updated variable name
-    const analysisResult = req.body.analysisResult; // Updated variable name
+    const { selectedEmoji, additionalMessage, analysisResult } = req.body;
 
-    // Save Emotion Analysis record to the database
     db.query('INSERT INTO emotion_records (user_id, selected_emoji, additional_message, analysis_result) VALUES (?, ?, ?, ?)', 
         [userId, selectedEmoji, additionalMessage, analysisResult], (err) => {
             if (err) {
-                console.error('Error inserting Emotion Analysis record into the database:', err);
-                return res.status(500).send('Error occurred while saving Emotion Analysis record.');
+                console.error('Error inserting Emotion record:', err);
+                return res.status(500).send('Error saving Emotion record.');
             }
-
-            res.status(200).send(`Emotion Analysis record saved successfully! <a href="/dashboard">Go back to dashboard</a>`);
+            res.status(200).send('Emotion Analysis record saved successfully!');
         });
 });
 
-// Route to handle Depression Assessment records
+// Fetch Emotion records for user
+app.get('/emotion-data', requireLogin, (req, res) => {
+    const userId = req.session.userId;
+    db.query('SELECT * FROM emotion_records WHERE user_id = ?', [userId], (err, results) => {
+        if (err) {
+            console.error('Error fetching Emotion data:', err);
+            return res.status(500).send('Error retrieving Emotion data.');
+        }
+        res.json(results);
+    });
+});
+
+// -------------------- Depression Assessment API (Updated) --------------------
 app.post('/depression', requireLogin, (req, res) => {
     const userId = req.session.userId;
     const answers = req.body;
-
-    // Convert answers object to an array of scores
     const scores = Object.values(answers).map(answer => parseInt(answer));
-
-    // Calculate the total score
     const totalScore = scores.reduce((sum, score) => sum + score, 0);
 
-    // Save Depression Assessment record to the database
     db.query('INSERT INTO depression_records (user_id, question1_answer, question2_answer, question3_answer, total_score) VALUES (?, ?, ?, ?, ?)', 
         [userId, answers.question1, answers.question2, answers.question3, totalScore], (err) => {
             if (err) {
-                console.error('Error inserting Depression Assessment record into the database:', err);
-                return res.status(500).send('Error occurred while saving Depression Assessment record.');
+                console.error('Error inserting Depression record:', err);
+                return res.status(500).send('Error saving Depression record.');
             }
-
-            res.status(200).send(`Depression Assessment record saved successfully! <a href="/dashboard">Go back to dashboard</a>`);
+            res.status(200).send('Depression Assessment record saved successfully!');
         });
 });
 
-// Route to handle Stress Measurement records
+// Fetch Depression records for user
+app.get('/depression-data', requireLogin, (req, res) => {
+    const userId = req.session.userId;
+    db.query('SELECT * FROM depression_records WHERE user_id = ?', [userId], (err, results) => {
+        if (err) {
+            console.error('Error fetching Depression data:', err);
+            return res.status(500).send('Error retrieving Depression data.');
+        }
+        res.json(results);
+    });
+});
+
+// -------------------- Stress Measurement API (Updated) --------------------
 app.post('/stress', requireLogin, (req, res) => {
     const userId = req.session.userId;
-    const workload = parseInt(req.body.workload);
-    const relationships = parseInt(req.body.relationships);
-    const health = parseInt(req.body.health);
-    const finances = parseInt(req.body.finances);
+    console.log("User ID:", userId, "Request Data:", req.body);
 
-    // Validate input data
-    if (isNaN(workload) || isNaN(relationships) || isNaN(health) || isNaN(finances)) {
-        return res.status(400).send('Please enter numerical values for stress factors.');
+    if (!userId) {
+        return res.status(401).json({ error: "User not logged in" });
     }
 
-    // Calculate the stress score
-    const stressScore = (workload + relationships + health + finances) / 4;
+    const { workload, relationships, health, finances } = req.body;
 
-    // Save Stress Measurement record to the database
-    db.query('INSERT INTO stress_records (user_id, workload, relationships, health, finances, stress_score) VALUES (?, ?, ?, ?, ?, ?)', 
-        [userId, workload, relationships, health, finances, stressScore], (err) => {
-            if (err) {
-                console.error('Error inserting Stress Measurement record into the database:', err);
-                return res.status(500).send('Error occurred while saving Stress Measurement record.');
-            }
+    if (![workload, relationships, health, finances].every(val => !isNaN(val))) {
+        return res.status(400).json({ error: "All values must be numbers" });
+    }
 
-            res.status(200).send(`Stress Measurement record saved successfully! <a href="/dashboard">Go back to dashboard</a>`);
-        });
-});
+    const stressScore = (parseInt(workload) + parseInt(relationships) + parseInt(health) + parseInt(finances)) / 4;
 
-// Route to handle Personality Weighted Model records
-app.post('/personality', requireLogin, (req, res) => {
-    const userId = req.session.userId;
-    const personalityTraits = req.body;
-
-    // Save Personality Weighted Model record to the database
-    db.query('INSERT INTO personality_records (user_id, extroversion, conscientiousness, openness, agreeableness, emotional_stability, creativity, adventurousness, empathy) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 
-        [userId, personalityTraits.extroversion, personalityTraits.conscientiousness, personalityTraits.openness, personalityTraits.agreeableness, personalityTraits.emotionalStability, personalityTraits.creativity, personalityTraits.adventurousness, personalityTraits.empathy], 
+    db.query(
+        'INSERT INTO stress_records (user_id, workload, relationships, health, finances, stress_score) VALUES (?, ?, ?, ?, ?, ?)',
+        [userId, workload, relationships, health, finances, stressScore],
         (err) => {
             if (err) {
-                console.error('Error inserting Personality Weighted Model record into the database:', err);
-                return res.status(500).send('Error occurred while saving Personality Weighted Model record.');
+                console.error("Database error:", err);
+                return res.status(500).json({ error: "Database error" });
             }
+            res.status(200).json({ message: "Stress record saved successfully" });
+        }
+    );
+});
 
-            res.status(200).send(`Personality Weighted Model record saved successfully! <a href="/dashboard">Go back to dashboard</a>`);
+
+// Fetch Stress records for user
+app.get('/stress-history', requireLogin, (req, res) => {
+    const userId = req.session.userId;
+
+    db.query('SELECT * FROM stress_records WHERE user_id = ? ORDER BY recorded_at DESC', [userId], (err, results) => {
+        if (err) {
+            console.error("Error fetching stress history:", err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        res.json(results);
+    });
+});
+
+
+// -------------------- Personality Weighted Model API (Updated) --------------------
+app.post('/personality', requireLogin, (req, res) => {
+    const userId = req.session.userId;
+    const traits = req.body;
+
+    db.query('INSERT INTO personality_records (user_id, extroversion, conscientiousness, openness, agreeableness, emotional_stability, creativity, adventurousness, empathy) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+        [userId, traits.extroversion, traits.conscientiousness, traits.openness, traits.agreeableness, traits.emotionalStability, traits.creativity, traits.adventurousness, traits.empathy], 
+        (err) => {
+            if (err) {
+                console.error('Error inserting Personality record:', err);
+                return res.status(500).send('Error saving Personality record.');
+            }
+            res.status(200).send('Personality record saved successfully!');
         });
 });
 
-// ... (remaining code)
 
-//intial code for  Handle Login
-app.post('/login', (req, res) => {
-    const { username,email, password } = req.body;
 
-    db.query('SELECT * FROM USERS WHERE username = ?', [username], async (err, results) => {
-        if (err) {
-            console.error('Error querying database:', err);
-            return res.send('An error occurred. Please try again.');
-        }
 
-        if (results.length > 0) {
-            const user = results[0];
-
-            // Compare hashed password
-            const match = await bcrypt.compare(password, user.password);
-            if (match) {
-                req.session.userId = user.id;
-                return res.redirect('/dashboard');
-            } else {
-                return res.send('Invalid login credentials. <a href="/">Go back to login</a>');
-            }
-        } else {
-            return res.send('Invalid login credentials. <a href="/">Go back to login</a>');
-        }
-    });
-});
-
-// intial code for Handle Signup
-app.post('/signup', async (req, res) => {
-    console.log('Request body:', req.body);
-    const { username,email, password } = req.body;
-
-    // Check if password is empty
-    if (!password || password.trim() === '') {
-        return res.send('Password is required');
-    }
-    const hashedPassword = await bcrypt.hash(password, 10); // Hash password before storing
-
-    db.query('INSERT INTO USERS (username, email, password) VALUES (?, ?,?)', [username, email, hashedPassword], (err) => {
-        if (err) {
-            console.error('Error inserting into database:', err);
-            return res.send('An error occurred. Please try again.');
-        }
-        res.send(`User ${username} signed up successfully! <a href="/">Go back to login</a>`);
-    });
-});
 
 
 // API Endpoint: Check if username is available

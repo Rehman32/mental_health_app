@@ -1,97 +1,3 @@
-/* body {
-    font-family: 'Lora', serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
-}
-
-header {
-    background-color: #17422b;
-    color: #edf0f1;
-    text-align: center;
-    padding: 20px 0;
-}
-
-nav ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    background-color: #2a5d3f;
-}
-
-nav li {
-    margin: 0 15px;
-}
-
-nav a {
-    color: #edf0f1;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-nav a:hover {
-    text-decoration: underline;
-}
-
-main {
-    padding: 20px;
-}
-
-.intro {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.intro img {
-    width: 100%;
-    max-width: 600px;
-    height: auto;
-    border-radius: 10px;
-}
-
-.intro blockquote {
-    font-style: italic;
-    margin-top: 20px;
-    color: #555;
-}
-
-.features {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-.feature {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 20px;
-    padding: 20px;
-    width: 300px;
-    text-align: center;
-}
-
-.feature img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-}
-
-.feature h2 {
-    margin-top: 15px;
-    color: #17422b;
-}
-
-footer {
-    background-color: #17422b;
-    color: #edf0f1;
-    text-align: center;
-    padding: 10px 0;
-    margin-top: 40px;
-} */
 
 * {
     margin: 0;
@@ -140,10 +46,11 @@ body {
     gap: 1rem;
 }
 
-.logo svg {
-    width: 40px;
-    height: 40px;
+.logo img {
+    width: 60px;
+    height: 50px;
     fill: var(--primary);
+    border-radius: 15%;
 }
 
 .logo h1 {
