@@ -1,93 +1,254 @@
-@import url('https://fonts.googleapis.com/css2?family=Alegreya&family=EB+Garamond&family=Lora&family=Salsa&family=Solway&display=swap');
+:root {
+    --primary: #2ecc71;
+    --secondary: #27ae60;
+    --accent: #3498db;
+    --dark: #2c3e50;
+    --light: #f8f9fa;
+    --gray: #6c757d;
+}
 
-body {
-    font-family: 'Salsa', serif;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-header {
-    background-color: #3498db;
-    color: #fff;
-    padding: 10px;
-    text-align: center;
+body {
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+}
+.navbar {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.nav-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo img {
+    width: 60px;
+    height: 50px;
+    fill: var(--primary);
+    border-radius: 15%;
+}
+
+.logo h1 {
+    color: var(--dark);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2.5rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--dark);
+    font-weight: 500;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: var(--primary);
+    transition: width 0.3s;
+}
+
+.nav-links a:hover::after {
     width: 100%;
 }
+header {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    padding: 2rem 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: auto;
+    margin-top: 100px;
+}
 
-h3{
+header h1 {
+    color: white;
     text-align: center;
+    font-size: 2.5rem;
+    font-weight: 600;
 }
 
 .container {
-    max-width: 600px;
-    margin: 30px auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
 }
 
-.input-group {
-    margin-bottom: 20px;
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #e9ecef;
+    border-radius: 3px;
+    margin: 2rem 0;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transition: width 0.3s ease;
+}
+
+.form-group {
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.question-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.question-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    color: var(--dark);
 }
 
-input {
+.slider-container {
+    position: relative;
+    padding: 1rem 0;
+}
+
+input[type="range"] {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-    border: 1px solid black;
-    border-radius: 4px;
+    height: 5px;
+    background: #e9ecef;
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--primary);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.value-indicator {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.875rem;
 }
 
 button {
-    background-color: #4caf50;
-    color: #fff;
-    padding: 10px;
+    background: var(--primary);
+    color: white;
     border: none;
-    border-radius: 4px;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
     cursor: pointer;
     width: 100%;
-}
-#goToDashboardBtn {
-    background-color: #4caf50;
-    color: #fff;
-    margin-top: 20px;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
+    transition: transform 0.3s ease, background 0.3s ease;
 }
 
-button:hover,
-#goToDashboardBtn:hover {
-    background-color: #45a049;
+button:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
 }
 
-#recommendation {
-    margin-top: 20px;
-    font-family: 'Salsa', cursive;
-    border: 2px solid black;
-    border-radius: 9px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-    padding: 13px;
+.result-container {
+    margin-top: 2rem;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.form-group {
-    margin-bottom: 15px;
+.result-container.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.tooltip {
-    font-size: 12px;
-    color: #555;
-    margin-left: 8px;
-    display: inline-block;
-    font-family: 'Solway', cursive;
+.personality-type {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.characteristics {
+    background: var(--light);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin: 1.5rem 0;
+}
+
+.recommendation {
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.5rem;
+    background: rgba(52, 152, 219, 0.1);
+    margin: 1.5rem 0;
+}
+
+@media (max-width: 768px) {
+    .container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
 }

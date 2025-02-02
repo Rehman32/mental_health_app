@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded",function(){
+    
 AOS.init({
     duration: 800,
     once: true
@@ -75,3 +77,4 @@ function getHealthAdvice(category) {
 
     return advice[category].map(item => `<li>${item}</li>`).join('');
 }
+})

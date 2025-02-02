@@ -1,135 +1,205 @@
-body {
-    font-family: 'Solway', serif;
-    background-color: #f7f7f7;
-    color: #333;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-.container{
-    border: 1px solid black;
-    border-radius: 8px;
-    background-color: aqua;
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    justify-content: center;
-    width: 40%;
-    padding: 20px;
-    position: relative;
-    top: 50px;
-}
-header {
-    width: 100%;
-    background-color: #3498db;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-}
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-h1 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            padding-top: 74px;
+        }
+        
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+        
+        .logo svg {
+            width: 40px;
+            height: 40px;
+            fill: var(--primary);
+        }
+        
+        .logo h1 {
+            color: var(--dark);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
 
-p {
-    font-size: 1rem;
-    margin-bottom: 10px;
-}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(153, 219, 181, 0.95), rgba(104, 170, 214, 0.95)),
+            url('/api/placeholder/1920/1080') center/cover;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+        }
 
-#emojis {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-}
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
 
-#emojis img {
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-}
+        .header h1 {
+            color: #2d3436;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
 
-#emojis img:hover {
-    transform: scale(1.2);
-}
+        .input-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
 
-textarea {
-    width: 100%;
-    height: 100px;
-    margin-bottom: 20px;
-    padding: 10px;
-    box-sizing: border-box;
-    resize: none;
-}
+        textarea {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #dfe6e9;
+            border-radius: 10px;
+            resize: vertical;
+            min-height: 100px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
 
-#analyze-button {
-    background-color: #4caf50;
-    color: #fff;
-    width: 40%;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.2s ease-in-out;
-    width: 100%;
-}
-#goToDashboardBtn {
-    background-color: #4caf50;
-    color: #fff;
-    margin-top: 20px;
-    width: 40%;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.2s ease-in-out;
-    width: 100%;
-}
+        textarea:focus {
+            outline: none;
+            border-color: #74b9ff;
+        }
 
-#analyze-button:hover,
-#goToDashboardBtn:hover {
-    background-color: #45a049;
-}
+        .analyze-btn {
+            padding: 1rem 2rem;
+            background: #0984e3;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 1rem;
+            font-weight: bold;
+        }
 
-#emojis img.selected {
-    border: 2px solid #007bff;
-    border-radius: 50%;
-}
+        .analyze-btn:hover {
+            background: #0062cc;
+        }
 
-#analysis-result {
-    margin-top: 20px;
-    font-size: 1.2rem;
-    color: #333;
-}
-/* emotion.css */
+        .results-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
 
-/* Add the following styles at the end of your existing CSS file or in a separate file */
+        .emotion-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-#recommendations {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    padding: 20px;
-  }
-  
-  #recommendations h2 {
-    font-size: 20px;
-    color: #333;
-    margin-bottom: 10px;
-  }
-  
-  #recommendations p {
-    font-size: 16px;
-    color: #666;
-    line-height: 1.5;
-  }
-  
-  /* Adjust the styles as needed for your design preferences */
-  
+        .emotion-history {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .emotion-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .emotion-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        @media (max-width: 768px) {
+            .results-section {
+                grid-template-columns: 1fr;
+            }
+        }

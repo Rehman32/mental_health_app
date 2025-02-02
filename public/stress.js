@@ -1,11 +1,10 @@
-
 document.addEventListener("DOMContentLoaded", function () {
     AOS.init({
         duration: 800,
         offset: 100,
         once: true
     });
-    const stressForm = document.getElementById("stressForm");
+
     const sliders = document.querySelectorAll(".stress-slider");
 
     // Update slider values dynamically
@@ -36,6 +35,10 @@ document.addEventListener("DOMContentLoaded", function () {
         stressLevel.style.transition = "width 1s ease-in-out";
         stressLevel.style.width = `${(stressScore / 10) * 100}%`;
 
+        if (stressScore < 4) stressLevel.style.backgroundColor = "green";
+        else if (stressScore < 7) stressLevel.style.backgroundColor = "orange";
+        else stressLevel.style.backgroundColor = "red";
+
         // Generate recommendations
         const recommendations = document.getElementById('recommendations');
         const category = getStressCategory(stressScore);
@@ -50,8 +53,8 @@ document.addEventListener("DOMContentLoaded", function () {
             </ul>
         `;
 
-        saveStressHistory(stressScore);
-        displayStressHistory();
+        // Save to database
+        submitStressData({ workload, relationships, health, finances, stressScore });
     }
 
     function getStressCategory(score) {
@@ -99,67 +102,58 @@ document.addEventListener("DOMContentLoaded", function () {
 
         return advice;
     }
-     // Function to handle form submission
-     function submitStressData() {
-        const workload = document.getElementById("workload").value;
-        const relationships = document.getElementById("relationships").value;
-        const health = document.getElementById("health").value;
-        const finances = document.getElementById("finances").value;
 
-        console.log("Submitting stress data:", { workload, relationships, health, finances });
-
+    function submitStressData(data) {
         fetch("/stress", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ workload, relationships, health, finances }),
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
         })
-        .then(response => response.text())
-        .then(data => {
-            console.log("Server response:", data);
-            alert(data); // Show response to user
-            fetchStressHistory(); // Refresh stress history
+        .then(response => response.json())
+        .then(responseData => {
+            if (responseData.error) {
+                console.error("Error saving stress data:", responseData.error);
+            } else {
+                fetchStressHistory(); // Refresh history on success
+            }
         })
-        .catch(error => {
-            console.error("Error submitting stress data:", error);
-            alert("Error saving stress data.");
-        });
+        .catch(error => console.error("Error saving stress data:", error));
     }
 
-     // Fetch past stress records
-     function fetchStressHistory() {
+    function fetchStressHistory() {
         fetch("/stress-history")
         .then(response => response.json())
         .then(data => {
             const historyDiv = document.getElementById("stressHistory");
-            historyDiv.innerHTML = "<h3>Past Stress Records</h3>";
-            if (data.length === 0) {
+            historyDiv.innerHTML = `
+                <div class="history-header">
+                    <h3>Past Stress Records</h3>
+                    <p>Review your previous stress assessments</p>
+                </div>
+            `;
+
+            if (!data || data.length === 0) {
                 historyDiv.innerHTML += "<p>No past records found.</p>";
                 return;
             }
-            data.forEach(record => {
-                historyDiv.innerHTML += `
-                    <div class="history-item">
-                        <p><strong>Workload:</strong> ${record.workload}/10</p>
+
+            historyDiv.innerHTML += data.map(record => `
+                <div class="history-card">
+                    <p><strong>Date:</strong> ${new Date(record.recorded_at).toLocaleString()}</p>
+                    <p><strong>Stress Score:</strong> ${record.stress_score}/10</p>
+                    <div class="history-details">
+                        <p><strong>Work:</strong> ${record.workload}/10</p>
                         <p><strong>Relationships:</strong> ${record.relationships}/10</p>
                         <p><strong>Health:</strong> ${record.health}/10</p>
-                        <p><strong>Finances:</strong> ${record.finances}/10</p>
-                        <p><strong>Stress Score:</strong> ${record.stress_score}</p>
-                        <p><strong>Recorded At:</strong> ${record.recorded_at}</p>
+                        <p><strong>Finance:</strong> ${record.finances}/10</p>
                     </div>
-                `;
-            });
+                </div>
+            `).join('');
         })
         .catch(error => console.error("Error fetching stress history:", error));
     }
 
-    // Load past stress records when page loads
     fetchStressHistory();
-
-    
-
-     // Attach event listener to button
-     document.querySelector(".calculate-btn").addEventListener("click", submitStressData);
+    document.querySelector(".calculate-btn").addEventListener("click", calculateStress);
 });
 

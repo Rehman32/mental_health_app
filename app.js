@@ -19,10 +19,12 @@ app.use(express.urlencoded({ extended: true }));
 
 // Session configuration
 app.use(session({
-    secret: 'your-secret-key',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true
 }));
+
+
 
 // MySQL database configuration
 const db = mysql.createConnection({
@@ -209,6 +211,8 @@ app.get('/depression-data', requireLogin, (req, res) => {
 app.post('/stress', requireLogin, (req, res) => {
     const userId = req.session.userId;
     console.log("User ID:", userId, "Request Data:", req.body);
+    console.log("Session Data:", req.session); // Log session
+    console.log("Request Body:", req.body);   // Log incoming request
 
     if (!userId) {
         return res.status(401).json({ error: "User not logged in" });

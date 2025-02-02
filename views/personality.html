@@ -1,63 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="personality.css">
-    <title>MBTI Personality Indicator</title>
+    <title>Modern MBTI Personality Assessment</title>
 </head>
-
 <body>
+    <nav class="navbar">
+        <div class="nav-content">
+          <div class="logo">
+            <img src="pictures/wellness_hub_logo.jpeg" alt="logo">
+            
+            <h1>Personal Wellness Hub</h1>
+          </div>
+          <div class="nav-links">
+            <a href="bmi.html">BMI Calculator</a>
+            <a href="stress.html">Stress Level</a>
+            <a href="emotion.html">Emotions</a>
+            <a href="depression.html">Depression</a>
+            <a href="personality.html">Personality</a>
+            <a href="login.html">Logout</a>
+          </div>
+        </div>
+      </nav>
+  
     <header>
-        <h1> MBTI Personality Indicator</h1>
+        <h1>Discover Your Personality Type</h1>
     </header>
+    
     <div class="container">
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
 
-        <h3>Fill the form low=1, high=10:</h3>
         <form id="personalityForm">
-            <div class="form-group">
-                <label for="question1">I prefer to focus on the outer world and take in information through my senses.</label>
-                <input type="number" id="question1" step="1" min="1" max="10" required>
+            <div class="question-card">
+                <div class="form-group">
+                    <label>How much do you prefer to focus on the outer world?</label>
+                    <div class="slider-container">
+                        <div class="value-indicator">5</div>
+                        <input type="range" id="question1" min="1" max="10" value="5" class="slider">
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="question2">I prefer to focus on my inner world and take in information through intuition.</label>
-                <input type="number" id="question2" step="1" min="1" max="10" required>
+            <div class="question-card">
+                <div class="form-group">
+                    <label>How much do you rely on intuition over sensory information?</label>
+                    <div class="slider-container">
+                        <div class="value-indicator">5</div>
+                        <input type="range" id="question2" min="1" max="10" value="5" class="slider">
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="question3">I prefer to make decisions based on logic and objective analysis.</label>
-                <input type="number" id="question3" step="1" min="1" max="10" required>
+            <div class="question-card">
+                <div class="form-group">
+                    <label>How much do you prefer logical decision-making?</label>
+                    <div class="slider-container">
+                        <div class="value-indicator">5</div>
+                        <input type="range" id="question3" min="1" max="10" value="5" class="slider">
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="question4">I prefer to make decisions based on values and the impact on people.</label>
-                <input type="number" id="question4" step="1" min="1" max="10" required>
+            <div class="question-card">
+                <div class="form-group">
+                    <label>How much do you consider emotions in decisions?</label>
+                    <div class="slider-container">
+                        <div class="value-indicator">5</div>
+                        <input type="range" id="question4" min="1" max="10" value="5" class="slider">
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="question5">I prefer to have a planned and organized approach to life.</label>
-                <input type="number" id="question5" step="1" min="1" max="10" required>
+            <div class="question-card">
+                <div class="form-group">
+                    <label>How much do you prefer structure and planning?</label>
+                    <div class="slider-container">
+                        <div class="value-indicator">5</div>
+                        <input type="range" id="question5" min="1" max="10" value="5" class="slider">
+                    </div>
+                </div>
             </div>
 
-            <button type="button" onclick="calculateMBTI()">Get MBTI Personality Type</button>
+            <button type="button" onclick="calculateMBTI()">Reveal My Personality Type</button>
         </form>
 
-        <div id="personalityOutput"></div>
-        <div id="recommendation"></div>
-        <div id="keyCharacteristics"></div>
-        <!-- Go to Dashboard button -->
-        <button id="goToDashboardBtn" onclick="goToDashboard()">Go to Dashboard</button>
-        <div id="personalityOutput"></div>
-        <div id="recommendation"></div>
-        <div id="keyCharacteristics"></div>
-
+        <div class="result-container" id="resultContainer">
+            <div class="personality-type" id="personalityOutput"></div>
+            <div class="characteristics" id="keyCharacteristics"></div>
+            <div class="recommendation" id="recommendation"></div>
+        </div>
     </div>
 
     <script src="personality.js"></script>
 </body>
-
 </html>
 <!-- ENTJ (The Commander): Extraverted, Intuitive, Thinking, Judging. Known for being strategic, assertive, and natural leaders.
 

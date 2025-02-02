@@ -1,32 +1,224 @@
-<!-- depression.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Wellness Assessment | Personal Wellness Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="depression.css">
-    <title>Depression Assessment</title>
 </head>
 <body>
-    <header>
-        <h1>Depression Assessment</h1>
-    </header>
+    <!-- Enhanced Navigation -->
+    <nav class="navbar">
+        <div class="nav-content">
+          <a href="dashboard.html" class="logo">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+              />
+            </svg>
+            <h1>Personal Wellness Hub</h1>
+          </a>
+          <div class="nav-links">
+            <a href="bmi.html">BMI Calculator</a>
+            <a href="stress.html" class="active">Stress Level</a>
+            <a href="emotion.html">Emotions</a>
+            <a href="depression.html">Depression</a>
+            <a href="personality.html">Personality</a>
+            <a href="login.html">Logout</a>
+          </div>
+        </div>
+      </nav>
 
-    <div class="depression-container">
-        <h2>Take the Depression Assessment</h2>
-        <form id="depressionForm" action="/depression" method="post">
-            <div id="formQuestions"></div>
-            <button type="submit">Submit Assessment</button>
-        </form>
-
-        <!-- Display assessment result here -->
-        <div class="result-section" id="resultSection"></div>
-
-        <!-- Go to Dashboard button -->
-        <button id="goToDashboardBtn" onclick="goToDashboard()">Go to Dashboard</button>
+    <!-- Progress Indicator -->
+    <div class="progress-wrapper">
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-stats">
+            <span class="progress-text">Progress: <span id="progressPercent">0</span>%</span>
+            <span class="time-remaining">Est. time remaining: <span id="timeRemaining">5</span> min</span>
+        </div>
     </div>
 
+    <main class="container">
+        <!-- Introduction Section -->
+        <section class="assessment-container" id="introSection" data-aos="fade-up">
+            <div class="assessment-header">
+                <div class="header-content">
+                    <h1>Mental Wellness Assessment</h1>
+                    <p class="subtitle">Professional screening tool for depression and anxiety</p>
+                    <div class="assessment-meta">
+                        <span><i class="fas fa-clock"></i> 5-10 minutes</span>
+                        <span><i class="fas fa-chart-bar"></i> Detailed analysis</span>
+                        <span><i class="fas fa-lock"></i> Private & secure</span>
+                    </div>
+                </div>
+                <div class="header-image">
+                    <img src="/api/placeholder/300/200" alt="Mental Wellness Illustration">
+                </div>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Professional Assessment</h3>
+                    <p>Based on clinically validated PHQ-9 and GAD-7 scales</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Track Progress</h3>
+                    <p>Monitor your mental health journey with detailed insights</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Private & Secure</h3>
+                    <p>Your data is protected with enterprise-grade encryption</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-icon">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <h3>Personalized Support</h3>
+                    <p>Get tailored recommendations and resources</p>
+                </div>
+            </div>
+
+            <div class="action-section">
+                <button class="primary-button pulse" id="startAssessment">
+                    Begin Assessment
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <p class="disclaimer">This tool is for screening purposes only and not a diagnostic instrument. Please consult a mental health professional for diagnosis and treatment.</p>
+            </div>
+        </section>
+
+        <!-- Assessment Form -->
+        <form id="assessmentForm" class="hidden">
+            <div class="question-wrapper">
+                <div id="questionContainer"></div>
+                
+                <div class="navigation-controls">
+                    <button type="button" class="nav-button primary-button" id="prevQuestion">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <div class="question-indicator">
+                        Question <span id="currentQuestion">1</span> of <span id="totalQuestions">10</span>
+                    </div>
+                    <button type="button" class="nav-button primary-button" id="nextQuestion">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Results Section -->
+        <section id="resultSection" class="hidden">
+            <div class="results-header">
+                <h2>Your Assessment Results</h2>
+                <p class="completion-date">Completed on <span id="completionDate"></span></p>
+            </div>
+
+            <div class="results-grid">
+                <div class="result-card main-score">
+                    <h3>Overall Assessment</h3>
+                    <div class="score-display">
+                        <div class="score-circle">
+                            <span id="mainScore">0</span>
+                            <small>/ 100</small>
+                        </div>
+                        <div class="severity-label" id="severityLabel">Minimal</div>
+                    </div>
+                </div>
+
+                <div class="result-card category-scores">
+                    <h3>Category Breakdown</h3>
+                    <div id="categoryScores"></div>
+                </div>
+
+                <div class="result-card trends">
+                    <h3>Progress Over Time</h3>
+                    <div id="trendsChart"></div>
+                </div>
+
+                <div class="result-card recommendations">
+                    <h3>Recommended Actions</h3>
+                    <div id="recommendationsList"></div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="primary-button" id="downloadReport">
+                    <i class="fas fa-download"></i> Download Report
+                </button>
+                <button class="secondary-button" id="scheduleConsultation">
+                    <i class="fas fa-calendar"></i> Schedule Consultation
+                </button>
+                <button class="secondary-button" id="viewResources">
+                    <i class="fas fa-book"></i> View Resources
+                </button>
+            </div>
+        </section>
+
+        <!-- Emergency Resources -->
+        <section class="emergency-resources">
+            <div class="emergency-header">
+                <i class="fas fa-phone"></i>
+                <h3>24/7 Crisis Support</h3>
+            </div>
+            <div class="emergency-grid">
+                <a href="tel:988" class="emergency-card">
+                    <i class="fas fa-phone-alt"></i>
+                    <div class="emergency-info">
+                        <h4>988 Suicide & Crisis Lifeline</h4>
+                        <p>24/7 free and confidential support</p>
+                    </div>
+                </a>
+                <a href="sms:741741" class="emergency-card">
+                    <i class="fas fa-comment-alt"></i>
+                    <div class="emergency-info">
+                        <h4>Crisis Text Line</h4>
+                        <p>Text HOME to 741741</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Support Modal -->
+    <div class="modal" id="supportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Additional Support Available</h2>
+                <button class="close-button" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Based on your responses, we recommend speaking with a mental health professional. Would you like to:</p>
+                <div class="modal-options">
+                    <button class="primary-button" id="findTherapist">
+                        <i class="fas fa-user-md"></i>
+                        Find a Therapist
+                    </button>
+                    <button class="secondary-button" id="exploreResources">
+                        <i class="fas fa-book-medical"></i>
+                        Explore Resources
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <script src="depression.js"></script>
-    
 </body>
 </html>
